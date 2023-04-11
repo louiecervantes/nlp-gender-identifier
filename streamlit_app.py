@@ -14,7 +14,13 @@ from nltk.corpus import names
 # Define the Streamlit app
 def app():
     nltk.download('names')
-    st.subheader('NLTK Names')
+    
+    st.title("Gender Prediction from first names")      
+    st.subheader("(c) 2023 Louie F. Cervantes, M.Eng.")
+    
+    st.subheader('The NLTK Names Package')
+    st.write('The Natural Language Toolkit (NLTK) names package is a module in NLTK that provides a collection of datasets and functions for working with personal names. It includes datasets of names from various cultures and languages, as well as functions for generating random names, determining gender from a name, and identifying the most common prefixes and suffixes used in names.')
+    
     with st.echo(code_location='below'):
         
         # Extract last N letters from the input word
@@ -46,20 +52,20 @@ def app():
             accuracy = round(100 * nltk_accuracy(classifier, test_data), 2)
             st.write('Accuracy = ' + str(accuracy) + '%')
     
-            st.subheader('Load the Alumni Data')
-            st.write('The alumni data was encoded without a gender column.  We will use the machine learning approach to add the gender data to this dataset.')
- 
-            if st.button('Load the alumni data'):  
-                df = pd.read_csv('2018-main.csv', header=0, sep = ",", encoding='latin')
+        st.subheader('Load the Alumni Data')
+        st.write('The alumni data was encoded without a gender column.  We will use the machine learning approach to add the gender data to this dataset.')
 
-                st.write('The data set before adding the gender')
-                st.dataframe(df.reset_index(drop=True), use_container_width=True)
+        if st.button('Load the alumni data'):  
+            df = pd.read_csv('2018-main.csv', header=0, sep = ",", encoding='latin')
 
-                df['GENDER'] = df.apply(lambda row: assign_gender(row['FIRST NAME']), axis=1)
+            st.write('The data set before adding the gender')
+            st.dataframe(df.reset_index(drop=True), use_container_width=True)
 
-                st.write('The data set sfter adding the gender')
-                st.dataframe(df.reset_index(drop=True), use_container_width=True)
-    
+            df['GENDER'] = df.apply(lambda row: assign_gender(row['FIRST NAME']), axis=1)
+
+            st.write('The data set sfter adding the gender')
+            st.dataframe(df.reset_index(drop=True), use_container_width=True)
+
     
 # run the app
 if __name__ == "__main__":
