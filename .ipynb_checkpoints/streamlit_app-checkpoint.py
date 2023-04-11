@@ -11,7 +11,7 @@ from nltk import NaiveBayesClassifier
 from nltk.classify import accuracy as nltk_accuracy
 from nltk.corpus import names
 
-classifier = []
+
 
 # Extract last N letters from the input word
 # and that will act as our "feature"
@@ -25,6 +25,7 @@ def assign_gender(name, classifier):
 # Define the Streamlit app
 def app():
     nltk.download('names')
+    classifier = []
     
     st.title("Gender Prediction from first names")      
     st.subheader("(c) 2023 Louie F. Cervantes, M.Eng.")
