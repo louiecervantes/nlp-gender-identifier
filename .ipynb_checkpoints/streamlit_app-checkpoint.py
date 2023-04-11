@@ -53,7 +53,7 @@ def app():
             # Define the number of samples used for train and test
             num_train = int(0.8 * len(data))
 
-            # Iterate through different lengths to compare the accuracy
+            st.text('Iterate through different lengths of end letters to compare the accuracy')
             for i in range(1, 6):
                 st.text('\nNumber of end letters:' + str(i))
                 features = [(extract_features(n, i), gender) for (n, gender) in data]
