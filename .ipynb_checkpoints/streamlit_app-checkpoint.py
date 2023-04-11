@@ -25,7 +25,7 @@ def assign_gender(name, classifier):
 # Define the Streamlit app
 def app():
     nltk.download('names')
-    classifier = []
+    df = pd.DataFrame()
     
     st.title("Gender Prediction from first names")      
     st.subheader("(c) 2023 Louie F. Cervantes, M.Eng.")
@@ -33,8 +33,17 @@ def app():
     st.subheader('The NLTK Names Package')
     st.write('The Natural Language Toolkit (NLTK) names package is a module in NLTK that provides a collection of datasets and functions for working with personal names. It includes datasets of names from various cultures and languages, as well as functions for generating random names, determining gender from a name, and identifying the most common prefixes and suffixes used in names.')
     
+    st.subheader('Load the Alumni Data')
+    st.write('The alumni data was encoded without a gender column.  We will use the machine learning approach to add the gender data to this dataset.')
+
+    if st.button('Load the alumni data'):  
+        #update the dataframe object
+        df = pd.read_csv('2018-main.csv', header=0, sep = ",", encoding='latin')
+
+        st.write('The data set before adding the gender')
+        st.dataframe(df.reset_index(drop=True), use_container_width=True)
+        
     with st.echo(code_location='below'):
-         
         if st.button('Load Names from file'):
             # Create training data using labeled names available in NLTK
             male_list = [(name, 'male') for name in names.words('male.txt')]
@@ -49,23 +58,14 @@ def app():
 
             features = [(extract_features(n, 2), gender) for (n, gender) in data]
             train_data, test_data = features[:num_train], features[num_train:]
+            
             classifier = NaiveBayesClassifier.train(train_data)
 
             # Compute the accuracy of the classifier
             accuracy = round(100 * nltk_accuracy(classifier, test_data), 2)
             st.write('Accuracy = ' + str(accuracy) + '%')
-    
-        st.subheader('Load the Alumni Data')
-        st.write('The alumni data was encoded without a gender column.  We will use the machine learning approach to add the gender data to this dataset.')
-
-        if st.button('Load the alumni data'):  
-            df = pd.read_csv('2018-main.csv', header=0, sep = ",", encoding='latin')
-
-            st.write('The data set before adding the gender')
-            st.dataframe(df.reset_index(drop=True), use_container_width=True)
-
+            #Create a new column in the dataframe and add the gender
             df['GENDER'] = df.apply(lambda row: assign_gender(row['FIRST NAME'], classifier), axis=1)
-
             st.write('The data set sfter adding the gender')
             st.dataframe(df.reset_index(drop=True), use_container_width=True)
 
