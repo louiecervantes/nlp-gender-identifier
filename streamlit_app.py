@@ -38,16 +38,15 @@ def app():
     
     st.subheader('Load the Alumni Data')
     st.write('The alumni data was encoded without a gender column.  We will use the machine learning approach to add the gender data to this dataset.')
-    with st.echo(code_location='below'):
-        
-            # Extract last N letters from the input word
-            # and that will act as our "feature"
-            def extract_features(word, N=2):
-                last_n_letters = word[-N:]
-                return {'feature': last_n_letters.lower()}
+    with st.echo(code_location='below'):   
+        # Extract last N letters from the input word
+        # and that will act as our "feature"
+        def extract_features(word, N=2):
+            last_n_letters = word[-N:]
+            return {'feature': last_n_letters.lower()}
 
-            def assign_gender(name):
-                return classifier.classify(extract_features(name,2)) 
+        def assign_gender(name):
+            return classifier.classify(extract_features(name,2)) 
             
         if st.button('Load the alumni data'):  
             df = pd.read_csv('2018-main.csv', header=0, sep = ",", encoding='latin')
