@@ -65,7 +65,7 @@ def app():
             accuracy = round(100 * nltk_accuracy(classifier, test_data), 2)
             st.write('Accuracy = ' + str(accuracy) + '%')
             #Create a new column in the dataframe and add the gender
-            df.loc[:['GENDER']] = df.apply(lambda row: assign_gender(row['FIRST NAME'], classifier), axis=1)
+            main_df.loc[:['GENDER']] = main_df.apply(lambda row: assign_gender(row['FIRST NAME'], classifier), axis=1)
             st.write('The data set sfter adding the gender')
             st.dataframe(df.reset_index(drop=True), use_container_width=True)
 
