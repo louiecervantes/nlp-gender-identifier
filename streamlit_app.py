@@ -11,6 +11,15 @@ from nltk import NaiveBayesClassifier
 from nltk.classify import accuracy as nltk_accuracy
 from nltk.corpus import names
 
+# Extract last N letters from the input word
+# and that will act as our "feature"
+def extract_features(word, N=2):
+    last_n_letters = word[-N:]
+    return {'feature': last_n_letters.lower()}
+
+def assign_gender(name):
+    return classifier.classify(extract_features(name,2))  
+
 # Define the Streamlit app
 def app():
     nltk.download('names')
@@ -22,16 +31,7 @@ def app():
     st.write('The Natural Language Toolkit (NLTK) names package is a module in NLTK that provides a collection of datasets and functions for working with personal names. It includes datasets of names from various cultures and languages, as well as functions for generating random names, determining gender from a name, and identifying the most common prefixes and suffixes used in names.')
     
     with st.echo(code_location='below'):
-        
-        # Extract last N letters from the input word
-        # and that will act as our "feature"
-        def extract_features(word, N=2):
-            last_n_letters = word[-N:]
-            return {'feature': last_n_letters.lower()}
-
-        def assign_gender(name):
-            return classifier.classify(extract_features(name,2))        
-        
+         
         if st.button('Load Names from file'):
             # Create training data using labeled names available in NLTK
             male_list = [(name, 'male') for name in names.words('male.txt')]
