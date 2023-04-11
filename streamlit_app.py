@@ -55,7 +55,7 @@ def app():
 
             # Iterate through different lengths to compare the accuracy
             for i in range(1, 6):
-                st.text('\nNumber of end letters:', i)
+                st.text('\nNumber of end letters:' + i)
                 features = [(extract_features(n, i), gender) for (n, gender) in data]
                 train_data, test_data = features[:num_train], features[num_train:]
                 classifier = NaiveBayesClassifier.train(train_data)
