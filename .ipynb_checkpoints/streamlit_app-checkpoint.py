@@ -39,9 +39,10 @@ def app():
     if st.button('Load the alumni data'):  
         #update the dataframe object
         df = pd.read_csv('2018-main.csv', header=0, sep = ",", encoding='latin')
-        main_df = df
+        main_df = df.copy()
+        
         st.write('The data set before adding the gender')
-        st.dataframe(df.reset_index(drop=True), use_container_width=True)
+        st.dataframe(df, use_container_width=True)
         
     with st.echo(code_location='below'):
         if st.button('Load Names from file'):
@@ -67,7 +68,7 @@ def app():
             #Create a new column in the dataframe and add the gender
             main_df.loc[:['GENDER']] = main_df.apply(lambda row: assign_gender(row['FIRST NAME'], classifier), axis=1)
             st.write('The data set sfter adding the gender')
-            st.dataframe(df.reset_index(drop=True), use_container_width=True)
+            st.dataframe(df, use_container_width=True)
 
     
 # run the app
