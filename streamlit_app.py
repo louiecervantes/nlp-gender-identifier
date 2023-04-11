@@ -53,14 +53,21 @@ def app():
             # Define the number of samples used for train and test
             num_train = int(0.8 * len(data))
 
+            # Iterate through different lengths to compare the accuracy
+            for i in range(1, 6):
+                st.text('\nNumber of end letters:', i)
+                features = [(extract_features(n, i), gender) for (n, gender) in data]
+                train_data, test_data = features[:num_train], features[num_train:]
+                classifier = NaiveBayesClassifier.train(train_data)
+                # Compute the accuracy of the classifier
+                accuracy = round(100 * nltk_accuracy(classifier, test_data), 2)
+                st.write('Accuracy = ' + str(accuracy) + '%')
+            
+            st.text('The best result is found using last letters = 2')
             features = [(extract_features(n, 2), gender) for (n, gender) in data]
             train_data, test_data = features[:num_train], features[num_train:]
-
-            classifier = NaiveBayesClassifier.train(train_data)
-
-            # Compute the accuracy of the classifier
-            accuracy = round(100 * nltk_accuracy(classifier, test_data), 2)
-            st.write('Accuracy = ' + str(accuracy) + '%')
+            classifier = NaiveBayesClassifier.train(train_data)            
+            
             #Create a new column in the dataframe and add the gender
             df['GENDER'] = df.apply(lambda row: assign_gender(row['FIRST NAME'], classifier), axis=1)
             st.write('The data set sfter adding the gender')
