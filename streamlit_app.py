@@ -17,6 +17,8 @@ def extract_features(word, N=2):
     last_n_letters = word[-N:]
     return {'feature': last_n_letters.lower()}
 
+classifier = ''
+
 def assign_gender(name):
     return classifier.classify(extract_features(name,2))  
 
