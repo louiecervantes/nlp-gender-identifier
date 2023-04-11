@@ -24,9 +24,7 @@ def assign_gender(name, classifier):
 
 # Define the Streamlit app
 def app():
-    nltk.download('names')    
-    main_df = pd.DataFrame()
-    
+    nltk.download('names')      
     st.title("Gender Prediction from first names")      
     st.subheader("(c) 2023 Louie F. Cervantes, M.Eng.")
     
@@ -39,7 +37,6 @@ def app():
         if st.button('Load the alumni data'):  
             #update the dataframe object
             df = pd.read_csv('2018-main.csv', header=0, sep = ",", encoding='latin')
-            main_df = df.copy()
 
             st.write('The data set before adding the gender')
             st.dataframe(df, use_container_width=True)
@@ -65,7 +62,7 @@ def app():
             accuracy = round(100 * nltk_accuracy(classifier, test_data), 2)
             st.write('Accuracy = ' + str(accuracy) + '%')
             #Create a new column in the dataframe and add the gender
-            main_df['GENDER'] = main_df.apply(lambda row: assign_gender(row['FIRST NAME'], classifier), axis=1)
+            df['GENDER'] = df.apply(lambda row: assign_gender(row['FIRST NAME'], classifier), axis=1)
             st.write('The data set sfter adding the gender')
             st.dataframe(df, use_container_width=True)
 
