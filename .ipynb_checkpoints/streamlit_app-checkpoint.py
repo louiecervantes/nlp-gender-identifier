@@ -35,17 +35,16 @@ def app():
     
     st.subheader('Load the Alumni Data')
     st.write('The alumni data was encoded without a gender column.  We will use the machine learning approach to add the gender data to this dataset.')
-
-    if st.button('Load the alumni data'):  
-        #update the dataframe object
-        df = pd.read_csv('2018-main.csv', header=0, sep = ",", encoding='latin')
-        main_df = df.copy()
-        
-        st.write('The data set before adding the gender')
-        st.dataframe(df, use_container_width=True)
-        
     with st.echo(code_location='below'):
-        if st.button('Load Names from file'):
+        if st.button('Load the alumni data'):  
+            #update the dataframe object
+            df = pd.read_csv('2018-main.csv', header=0, sep = ",", encoding='latin')
+            main_df = df.copy()
+
+            st.write('The data set before adding the gender')
+            st.dataframe(df, use_container_width=True)
+
+
             # Create training data using labeled names available in NLTK
             male_list = [(name, 'male') for name in names.words('male.txt')]
             female_list = [(name, 'female') for name in names.words('female.txt')]
@@ -59,7 +58,7 @@ def app():
 
             features = [(extract_features(n, 2), gender) for (n, gender) in data]
             train_data, test_data = features[:num_train], features[num_train:]
-            
+
             classifier = NaiveBayesClassifier.train(train_data)
 
             # Compute the accuracy of the classifier
