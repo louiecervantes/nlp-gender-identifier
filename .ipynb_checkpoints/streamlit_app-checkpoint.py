@@ -11,15 +11,15 @@ from nltk import NaiveBayesClassifier
 from nltk.classify import accuracy as nltk_accuracy
 from nltk.corpus import names
 
+classifier = NaiveBayesClassifier()
+
 # Extract last N letters from the input word
 # and that will act as our "feature"
 def extract_features(word, N=2):
     last_n_letters = word[-N:]
     return {'feature': last_n_letters.lower()}
 
-classifier = ''
-
-def assign_gender(name):
+def assign_gender(name, classifier):
     return classifier.classify(extract_features(name,2))  
 
 # Define the Streamlit app
@@ -63,7 +63,7 @@ def app():
             st.write('The data set before adding the gender')
             st.dataframe(df.reset_index(drop=True), use_container_width=True)
 
-            df['GENDER'] = df.apply(lambda row: assign_gender(row['FIRST NAME']), axis=1)
+            df['GENDER'] = df.apply(lambda row: assign_gender(row['FIRST NAME'], classifier), axis=1)
 
             st.write('The data set sfter adding the gender')
             st.dataframe(df.reset_index(drop=True), use_container_width=True)
